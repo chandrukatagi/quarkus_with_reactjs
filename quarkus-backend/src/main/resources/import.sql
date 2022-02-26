@@ -1,1 +1,2 @@
 INSERT INTO user(id, firstName,lastName,phone,email,`password`) VALUES (nextval('hibernate_sequence'), 'Abhi','Sagar','888888888','s@g.com','99999');
+INSERT INTO blog(id,title,body,author) VALUES (nextval('hibernate_sequence'),'Blog Title','Blog Content','author@gmail.com');

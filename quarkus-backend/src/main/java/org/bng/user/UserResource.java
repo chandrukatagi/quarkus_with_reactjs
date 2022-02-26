@@ -3,11 +3,13 @@ package org.bng.user;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.bng.data.User;
 import org.bng.security.TokenService;
+import org.jboss.resteasy.plugins.server.servlet.ServletSecurityContext;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -25,6 +27,14 @@ public class UserResource {
     }
 
     @GET
+    @Path("/user")
+    public String getUser(@Context ServletSecurityContext ctx) {
+        // super simplified registration, no checks of uniqueness
+        System.out.println("x");
+        return ctx.getUserPrincipal().getName();
+    }
+
+    @GET
     @Path("/login")
     public String login(@QueryParam("email") String email, @QueryParam("password") String password) {
         System.out.println("Email: " + email);
@@ -34,6 +44,6 @@ public class UserResource {
             throw new WebApplicationException(
                     Response.status(404).entity("No user found or password is incorrect").build());
         }
-        return service.generateUserToken(existingUser.getEmail(), password);
+        return service.generateUserToken(existingUser.getEmail(), email);
     }
 }

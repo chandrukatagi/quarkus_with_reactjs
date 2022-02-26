@@ -11,9 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { createHashHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import axios from 'axios';
-export const history = createHashHistory();
+export const history = createBrowserHistory();
 
 const styles = (theme) => ({
 	paper: {
@@ -81,17 +81,23 @@ class Login extends Component {
 		};
 		axios.get('/users/login', {params:userData})
 			.then((response) => {
-				localStorage.setItem('AuthToken', `Bearer ${response.data.token}`);
+				console.log(response);
+
+				localStorage.setItem('email',this.state.email);
+				localStorage.setItem('AuthToken', `Bearer ${response.data}`);
+				
 				this.setState({
 					loading: false
 				});
 				history.push('/');
 			})
 			.catch((error) => {
+				console.log(error);
 				this.setState({
 					errors: error.response.data,
 					loading: false
 				});
+				
 			});
 	};
 
